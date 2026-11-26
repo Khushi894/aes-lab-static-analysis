@@ -151,6 +151,25 @@ st += [P("1. Aim", H1),
 
 sonar_path = ST / "sonar-issues.json"
 sonar = json.loads(sonar_path.read_text()) if sonar_path.exists() else None
+SN_ALL = [
+    ("SN-01", "sonar python:S5542", 80, "Medium", "a", "D-01 (ECB structure leakage reproduced)",
+     "Same location as SG-01. Sonar's rule-level severity is context-blind; triaged Medium because the ECB helper is "
+     "reachable only from demo/tamper."),
+    ("SN-02", "sonar python:S5542", 85, "Medium", "a", "D-01 (demo round trip passed)", "Same location as SG-02."),
+    ("SN-03", "sonar python:S5542", 93, "Medium", "a", "D-02 (1-bit flip decrypts silently)", "Same location as SG-03."),
+    ("SN-04", "sonar python:S930", 157, "Info", "b", "D-01 (demo produced comparison.png)",
+     "FALSE POSITIVE: Pillow >= 10.1 (pinned in requirements.txt) has load_default(size=None). Checked on Pillow 13.0.0: "
+     "the signature accepts size and load_default(32) returns a font (called directly; the fallback branch itself only runs "
+     "when DejaVuSans-Bold.ttf is missing). Sonar's type data appears older than Pillow 10.1."),
+    ("SN-05", "sonar python:S930", 174, "Info", "b", "D-01 (demo produced comparison.png)", "Same as SN-04."),
+]
+sonar_by = {(i["rule"], i.get("line")): i for i in (sonar["issues"] if sonar else [])}
+SNR = []
+for r in SN_ALL:
+    if sonar and (r[1].split()[1], r[2]) in sonar_by:
+        SNR.append(r)
+    elif sonar:
+        print("warning: expected Sonar issue", r[1], r[2], "not in sonar-issues.json; row omitted")
 
 st += [P("2. Scope, environment and honest limits", H1),
        table([["Item", "Detail"],
@@ -233,18 +252,33 @@ else:
     for h in sonar["hotspots"]:
         rows.append([h["key"][-6:], "Hotspot", h["ruleKey"], f"{h['component'].split(':')[-1]}:{h.get('line', '-')}",
                      h.get("vulnerabilityProbability", "-"), h["message"]])
-    st += [table(rows, [1.4, 1.6, 2.6, 2.6, 2.6, 6.8])]
+    st += [table(rows, [1.4, 1.6, 2.6, 2.6, 2.6, 6.8]), Spacer(1, 6)]
+    hs = len(sonar["hotspots"])
+    rows = [["ID", "Rule", "Line", "Sonar severity", "Confidence", "Triaged sev."]]
+    for fid, rule, line, tri, cl, dyn, just in SNR:
+        i = sonar_by[(rule.split()[1], line)]
+        rows.append([fid, rule.split()[1], line, i.get("severity", "-"),
+                     "n/a (issues have no confidence field)", tri])
+    st += [P(f"SonarQube raised <b>{len(sonar['issues'])} issues</b> and <b>{hs} security hotspots</b>. "
+             "Issues have a severity but no confidence value, so confidence is shown as n/a.", B), Spacer(1, 3),
+           table(rows, [1.3, 2.6, 1.2, 2.8, 6.8, 2.9]), Spacer(1, 6),
+           P("Sonar versus Semgrep", H2),
+           P("Sonar rule S5542 flagged the three ECB lines (80, 85, 93) that the stock Semgrep rule missed; the custom "
+             "Semgrep rule reports the same three lines. Sonar's two other findings (S930, rated Blocker) are false "
+             "positives. Sonar raised nothing for the output-path and permission weaknesses (SG-05, SG-07, SG-08), which "
+             "were found by the custom Semgrep rules and confirmed by the supplementary dynamic tests. The two tools "
+             "overlap on ECB and otherwise differ, so each added something.", B)]
 
 st += [PageBreak(), P("6. Cross-reference with dynamic testing", H1),
        P("Classes: <b>(a)</b> confirmed by dynamic testing; <b>(b)</b> false positive, justified; <b>(c)</b> needs further "
          "investigation. A + mark means the evidence comes from the supplementary tests, not Q1 itself.", B), Spacer(1, 4)]
 rows = [["ID", "Tool / rule", "Line", "Class", "Dynamic evidence", "Justification or next step"]]
-for fid, rule, line, tri, cl, dyn, just in F + M:
+for fid, rule, line, tri, cl, dyn, just in F + SNR + M:
     rows.append([fid, rule, line, cl, dyn, just])
 st += [table(rows, [1.2, 3.4, 1.0, 1.2, 4.3, 6.5], cls_col=3), Spacer(1, 4)]
-cnt = {k: sum(1 for r in F + M if r[4] == k) for k in "abc"}
+cnt = {k: sum(1 for r in F + SNR + M if r[4] == k) for k in "abc"}
 st += [P(f"Totals: (a) confirmed = {cnt['a']}, (b) false positive = {cnt['b']}, (c) investigate = {cnt['c']}. "
-         "No Q1 test contradicts any Semgrep finding. The GCM path (D-03 to D-06) produced no Semgrep finding, "
+         "No Q1 test contradicts any tool finding. The GCM path (D-03 to D-06) produced no Semgrep finding, "
          "which agrees with the dynamic result.", B)]
 
 st += [P("7. Source-to-sink traces", H1),
@@ -289,14 +323,14 @@ st += [P("8. Remediation summary", H1),
        P("Not changed: aes_lab.py was left untouched so that the code scanned matches the evidence in this report.", B)]
 
 st += [P("9. Result", H1),
-       P(f"Semgrep analysed aes_lab.py and test_aes_lab.py and produced {len(sem['results'])} findings. After triage, "
-         f"{cnt['a']} are confirmed by dynamic testing (three ECB weaknesses proven by Q1 and three file-write weaknesses "
-         "proven by the supplementary tests), "
-         f"{cnt['b']} are justified false positives, and {cnt['c']} item remains open (M-01). "
-         "The production encrypt and decrypt path (AES-256-GCM, random nonce, env-supplied key) produced no cryptographic "
-         "finding and held up under every Q1 tamper test. The real weaknesses are the ECB helpers (reachable only from "
-         "demo code) and unsafe output-file handling. "
-         + ("SonarQube results are included above." if sonar else
+       P(f"Semgrep produced {len(sem['results'])} findings" +
+         (f" and SonarQube {len(sonar['issues'])} issues with {len(sonar['hotspots'])} hotspots" if sonar else "") +
+         f". After triage of all {cnt['a'] + cnt['b'] + cnt['c']} entries, {cnt['a']} are confirmed by dynamic testing "
+         f"(ECB weaknesses proven by Q1; file-write weaknesses proven by the supplementary tests), {cnt['b']} are justified "
+         f"false positives and {cnt['c']} remains open (M-01). The production encrypt and decrypt path (AES-256-GCM, random "
+         "nonce, env-supplied key) produced no cryptographic finding and held up under every Q1 tamper test. The real "
+         "weaknesses are the ECB helpers (reachable only from demo code) and unsafe output-file handling. "
+         + ("SonarQube and Semgrep agree on ECB and otherwise complement each other." if sonar else
             "The SonarQube section is pending its scan, as stated in section 5; this report makes no claim about what "
             "SonarQube will report."), B),
        P("10. Evidence and repository", H1),
