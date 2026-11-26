@@ -1,0 +1,7 @@
+blk  plaintext         ECB ciphertext block              GCM ciphertext block
+  0  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  f1215e9f9ec027e54fa683d3a4d8df32
+  1  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  c325c808d05b2b76133d19ecd20f5daf
+  2  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  e2f2211be5f28c0d5876b3d3359efb48
+  3  RETREAT AT DUSK!  de6b5e1d2406373070a9b9237548b0c0  fd1c3368aa9d61ff8eee459d6e199c48
+  4  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  5b86bbda4ab2990b8cfd87b8ae36f5d4
+  5  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  34ac1baadd6baf346c7a13465729995c

@@ -1,0 +1,67 @@
+rules:
+  - id: aes-lab-ecb-mode-any-args
+    languages: [python]
+    severity: WARNING
+    message: >-
+      AES-ECB leaks plaintext structure and has no integrity protection. Stock rule
+      insecure-cipher-mode-ecb only matches ECB($IV) with one argument, so it misses the real
+      call modes.ECB(), which takes none. Use AESGCM instead.
+    metadata:
+      cwe: ["CWE-327: Use of a Broken or Risky Cryptographic Algorithm"]
+      owasp: ["A02:2021 - Cryptographic Failures"]
+      confidence: HIGH
+      impact: HIGH
+      likelihood: MEDIUM
+    pattern: cryptography.hazmat.primitives.ciphers.modes.ECB(...)
+
+  - id: aes-lab-cli-path-taint
+    mode: taint
+    languages: [python]
+    severity: INFO
+    message: >-
+      Command-line path (args.input / args.output) reaches a filesystem sink with no
+      normalisation, containment check or symlink handling.
+    metadata:
+      cwe: ["CWE-22: Improper Limitation of a Pathname to a Restricted Directory",
+            "CWE-59: Improper Link Resolution Before File Access"]
+      owasp: ["A01:2021 - Broken Access Control"]
+      confidence: MEDIUM
+      impact: MEDIUM
+      likelihood: LOW
+    pattern-sources:
+      - pattern: args.input
+      - pattern: args.output
+    pattern-sinks:
+      - pattern: Path(...).read_bytes()
+      - pattern: Path(...).write_bytes(...)
+      - pattern: open(...)
+
+  - id: aes-lab-decrypted-output-default-perms
+    languages: [python]
+    severity: WARNING
+    message: >-
+      Decrypted plaintext is written with default permissions (umask-dependent, typically 0644,
+      readable by other local users) and without O_NOFOLLOW / O_EXCL.
+    metadata:
+      cwe: ["CWE-732: Incorrect Permission Assignment for Critical Resource",
+            "CWE-377: Insecure Temporary File"]
+      owasp: ["A05:2021 - Security Misconfiguration"]
+      confidence: MEDIUM
+      impact: MEDIUM
+      likelihood: MEDIUM
+    patterns:
+      - pattern: Path($P).write_bytes($DATA)
+      - pattern-inside: |
+          def cmd_decrypt(...):
+              ...
+
+  - id: aes-lab-assert-used-for-check
+    languages: [python]
+    severity: INFO
+    message: assert statements are removed under python -O, so they must not be relied on as a security check.
+    metadata:
+      cwe: ["CWE-617: Reachable Assertion"]
+      confidence: LOW
+      impact: LOW
+      likelihood: LOW
+    pattern: assert $X == $Y

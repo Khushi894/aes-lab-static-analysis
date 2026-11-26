@@ -1,0 +1,26 @@
+Key loaded from environment variable AES_KEY (value never printed).
+
+== Random nonce per encryption ==
+nonce #1 : d4981f60b4a8607ab4164c46
+nonce #2 : 758f6faa657d959108b1faf6
+ciphertext #1 : 1f46ddd539d2962b6e02015391ef608b3348692f6f4c43033fda2aa9f8b026
+ciphertext #2 : b33fb2660dbfd6b688452bee593d6d0528b6eaccab9fe8954610cfa42b5d76
+identical ciphertexts? False
+ECB, same plaintext twice -> identical? True
+
+== Bitmap: ECB vs GCM ==
+plaintext pixels    : 12288 blocks, 368 unique, most-repeated block x4332
+AES-ECB ciphertext  : 12289 blocks, 369 unique, most-repeated block x4332
+AES-GCM ciphertext  : 12288 blocks, 12288 unique, most-repeated block x1
+round-trip decryption verified for both modes
+saved evidence/comparison.png
+
+== Text with repeating content: ECB vs GCM (16-byte blocks) ==
+blk  plaintext         ECB ciphertext block              GCM ciphertext block
+  0  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  f1215e9f9ec027e54fa683d3a4d8df32
+  1  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  c325c808d05b2b76133d19ecd20f5daf
+  2  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  e2f2211be5f28c0d5876b3d3359efb48
+  3  RETREAT AT DUSK!  de6b5e1d2406373070a9b9237548b0c0  fd1c3368aa9d61ff8eee459d6e199c48
+  4  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  5b86bbda4ab2990b8cfd87b8ae36f5d4
+  5  ATTACK AT DAWN!!  34b92c7cb6e1c8450ef5c370ddac8a24  34ac1baadd6baf346c7a13465729995c
+ECB: 2 unique of 6 blocks; GCM: 6 unique of 6 blocks

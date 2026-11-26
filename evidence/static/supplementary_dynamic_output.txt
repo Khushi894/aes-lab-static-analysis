@@ -1,0 +1,12 @@
+== T1: permissions of decrypted plaintext (umask 022) ==
+644 /tmp/W/p.dec
+644 /tmp/W/c.enc
+== T2: output path is a pre-planted symlink to a victim file ==
+victim.txt now contains: hello secret
+== T2b: same symlink trick against the ENCRYPT output path ==
+victim2.txt now starts with magic bytes: AGC1
+== T3: output path with ../ components (CLI operator privilege) ==
+/tmp/W/escaped.txt
+== T4: python -O (asserts stripped) still runs demo ==
+  5  ATTACK AT DAWN!!  c76b2a0db833a332d1f65af118367647  085002667a4709b9e7466f4896cf1dee
+ECB: 2 unique of 6 blocks; GCM: 6 unique of 6 blocks

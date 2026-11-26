@@ -1,0 +1,16 @@
+$ echo "Confidential: salary table Q4" > secret.txt
+$ python aes_lab.py encrypt -i secret.txt -o secret.enc
+encrypted secret.txt -> secret.enc (AES-256-GCM, random 96-bit nonce)
+$ python aes_lab.py decrypt -i secret.enc -o secret.dec.txt
+decrypted secret.enc -> secret.dec.txt (authentication tag verified)
+$ cat secret.dec.txt
+Confidential: salary table Q4
+$ cmp secret.txt secret.dec.txt && echo "IDENTICAL"
+IDENTICAL
+
+# attacker flips ONE bit of secret.enc (byte 20, bit 0)
+$ python aes_lab.py decrypt -i secret_tampered.enc -o secret.bad.txt
+AUTHENTICATION FAILED: ciphertext/tag/nonce was modified or key is wrong. No plaintext released.
+exit code: 2
+$ ls secret.bad.txt
+ls: cannot access 'secret.bad.txt': No such file or directory

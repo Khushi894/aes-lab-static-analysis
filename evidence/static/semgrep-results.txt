@@ -1,0 +1,56 @@
+                    
+                    
+┌──────────────────┐
+│ 11 Code Findings │
+└──────────────────┘
+              
+    aes_lab.py
+    ❯❱ rules.aes-lab-ecb-mode-any-args
+          ❰❰ Blocking ❱❱
+          AES-ECB leaks plaintext structure and has no integrity protection. Stock rule insecure-cipher-mode-
+          ecb only matches ECB($IV) with one argument, so it misses the real call modes.ECB(), which takes   
+          none. Use AESGCM instead.                                                                          
+                                                                                                             
+           80┆ enc = Cipher(algorithms.AES(key), modes.ECB()).encryptor()
+            ⋮┆----------------------------------------
+           85┆ dec = Cipher(algorithms.AES(key), modes.ECB()).decryptor()
+            ⋮┆----------------------------------------
+           93┆ dec = Cipher(algorithms.AES(key), modes.ECB()).decryptor()
+   
+     ❱ rules.aes-lab-cli-path-taint
+          ❰❰ Blocking ❱❱
+          Command-line path (args.input / args.output) reaches a filesystem sink with no normalisation,
+          containment check or symlink handling.                                                       
+                                                                                                       
+          196┆ plaintext = Path(args.input).read_bytes()
+            ⋮┆----------------------------------------
+          197┆ Path(args.output).write_bytes(gcm_encrypt(key, plaintext))
+            ⋮┆----------------------------------------
+          203┆ blob = Path(args.input).read_bytes()
+            ⋮┆----------------------------------------
+          210┆ Path(args.output).write_bytes(plaintext)
+   
+    ❯❱ rules.aes-lab-decrypted-output-default-perms
+          ❰❰ Blocking ❱❱
+          Decrypted plaintext is written with default permissions (umask-dependent, typically 0644, readable
+          by other local users) and without O_NOFOLLOW / O_EXCL.                                            
+                                                                                                            
+          210┆ Path(args.output).write_bytes(plaintext)
+   
+     ❱ semgrep-rules.python.lang.correctness.useless-eqeq
+          ❰❰ Blocking ❱❱
+          This expression is always True: `ecb_encrypt(key, msg) == ecb_encrypt(key, msg)` or          
+          `ecb_encrypt(key, msg) != ecb_encrypt(key, msg)`. If testing for floating point NaN, use     
+          `math.isnan(ecb_encrypt(key, msg))`, or `cmath.isnan(ecb_encrypt(key, msg))` if the number is
+          complex.                                                                                     
+                                                                                                       
+          231┆ print(f"ECB, same plaintext twice -> identical? {ecb_encrypt(key, msg) == ecb_encrypt(key,
+               msg)}\n")                                                                                 
+   
+     ❱ rules.aes-lab-assert-used-for-check
+          ❰❰ Blocking ❱❱
+          assert statements are removed under python -O, so they must not be relied on as a security check.
+                                                                                                           
+          253┆ assert ecb_decrypt(key, ecb_ct) == pixels
+            ⋮┆----------------------------------------
+          254┆ assert gcm_decrypt(key, gcm_blob) == pixels

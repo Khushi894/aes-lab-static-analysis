@@ -1,0 +1,24 @@
+plaintext          : Transfer 100 to Alice. Account: 4417-0021. Authorised by: Bob.
+container length   : 94 bytes (4 magic + 12 nonce + 62 ct + 16 tag)
+
+== Baseline: untouched ciphertext ==
+decrypt -> Transfer 100 to Alice. Account: 4417-0021. Authorised by: Bob. 
+
+== AES-GCM tamper tests ==
+flip 1 bit in ciphertext body     : REJECTED  (InvalidTag - no plaintext released)
+flip 1 bit in authentication tag  : REJECTED  (InvalidTag - no plaintext released)
+flip 1 bit in nonce               : REJECTED  (InvalidTag - no plaintext released)
+flip 1 bit in header (AAD)        : REJECTED  (InvalidTag - no plaintext released)
+truncate last byte                : REJECTED  (InvalidTag - no plaintext released)
+append one byte                   : REJECTED  (InvalidTag - no plaintext released)
+
+all tampered ciphertexts rejected: True
+
+wrong key                         : REJECTED  (InvalidTag)
+
+wrote evidence/message.enc and evidence/message_tampered.enc (one bit differs)
+
+== Contrast: AES-ECB has no integrity protection ==
+original  : b'Transfer 100 to Alice. Account: 4417-0021. Authorised by: Bob.'
+after flip: b'\xa1\xdbc\xa7gh\xf0\xed\xc3E\xe8\x81\xa2\xfa\xea\x13Alice. Account: 4417-0021. Authorised by: Bob.'
+-> ECB decrypts without any error; one block silently becomes garbage.
