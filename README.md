@@ -30,7 +30,7 @@ python aes_lab.py decrypt -i secret.enc -o secret.dec.txt # verifies tag first
 python aes_lab.py demo    -d evidence                     # ECB vs GCM bitmap + text
 python aes_lab.py tamper  -d evidence                     # bit-flip / truncation tests
 python -m unittest -v                                     # unit tests
-python report/generate_report.py --name "Your Name" --roll "ID" --repo "<repo url>"
+
 ```
 
 ## Layout
