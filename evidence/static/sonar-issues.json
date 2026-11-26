@@ -1,0 +1,232 @@
+{
+  "issues": [
+    {
+      "key": "15e73506-a15e-4c46-8edc-bd9c7aa0b73f",
+      "rule": "python:S5542",
+      "severity": "CRITICAL",
+      "component": "aes-lab:aes_lab.py",
+      "project": "aes-lab",
+      "line": 80,
+      "hash": "99ccd6b608690005095ef152578495fb",
+      "textRange": {
+        "startLine": 80,
+        "endLine": 80,
+        "startOffset": 38,
+        "endOffset": 49
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Use secure mode and padding scheme.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "khushi003rao@gmail.com",
+      "tags": [
+        "cwe",
+        "cryptography",
+        "privacy"
+      ],
+      "creationDate": "2026-11-26T08:40:12+0000",
+      "updateDate": "2026-11-26T09:33:54+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "HIGH"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "23bb2e21-db0b-46a2-9df7-1120dc42d740",
+      "rule": "python:S5542",
+      "severity": "CRITICAL",
+      "component": "aes-lab:aes_lab.py",
+      "project": "aes-lab",
+      "line": 85,
+      "hash": "6f10c3f05907571337c6ea80142eda93",
+      "textRange": {
+        "startLine": 85,
+        "endLine": 85,
+        "startOffset": 38,
+        "endOffset": 49
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Use secure mode and padding scheme.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "khushi003rao@gmail.com",
+      "tags": [
+        "cwe",
+        "cryptography",
+        "privacy"
+      ],
+      "creationDate": "2026-11-26T08:40:12+0000",
+      "updateDate": "2026-11-26T09:33:54+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "HIGH"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "2ab7feb6-8be6-4d15-aee7-ccd287b48c56",
+      "rule": "python:S5542",
+      "severity": "CRITICAL",
+      "component": "aes-lab:aes_lab.py",
+      "project": "aes-lab",
+      "line": 93,
+      "hash": "6f10c3f05907571337c6ea80142eda93",
+      "textRange": {
+        "startLine": 93,
+        "endLine": 93,
+        "startOffset": 38,
+        "endOffset": 49
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Use secure mode and padding scheme.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "khushi003rao@gmail.com",
+      "tags": [
+        "cwe",
+        "cryptography",
+        "privacy"
+      ],
+      "creationDate": "2026-11-26T08:40:12+0000",
+      "updateDate": "2026-11-26T09:33:54+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "HIGH"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "dfa080be-46f3-41d1-87f4-1d73f8f3e6f8",
+      "rule": "python:S930",
+      "severity": "BLOCKER",
+      "component": "aes-lab:aes_lab.py",
+      "project": "aes-lab",
+      "line": 157,
+      "hash": "2d1da3c8005c0a29c74ad0fe1c314308",
+      "textRange": {
+        "startLine": 157,
+        "endLine": 157,
+        "startOffset": 15,
+        "endOffset": 37
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Remove 1 unexpected arguments; 'load_default' expects 0 positional arguments.",
+      "effort": "10min",
+      "debt": "10min",
+      "author": "khushi003rao@gmail.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-11-26T08:40:12+0000",
+      "updateDate": "2026-11-26T09:33:54+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "d59fef4e-ba70-4430-819d-9c5802d0f1c5",
+      "rule": "python:S930",
+      "severity": "BLOCKER",
+      "component": "aes-lab:aes_lab.py",
+      "project": "aes-lab",
+      "line": 174,
+      "hash": "feca33c13cd43182f257cc9634389c11",
+      "textRange": {
+        "startLine": 174,
+        "endLine": 174,
+        "startOffset": 15,
+        "endOffset": 37
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Remove 1 unexpected arguments; 'load_default' expects 0 positional arguments.",
+      "effort": "10min",
+      "debt": "10min",
+      "author": "khushi003rao@gmail.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-11-26T08:40:12+0000",
+      "updateDate": "2026-11-26T09:33:54+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    }
+  ],
+  "hotspots": [],
+  "server": "http://localhost:9000"
+}
